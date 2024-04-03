@@ -1,6 +1,8 @@
 const path = require("path");
 const express = require("express");
 
+const csrf = require("csurf"); //보안 관련한 패키지
+
 const db = require("./data/database");
 
 const authRoutes = require("./routes/auth_routes");
@@ -12,7 +14,11 @@ app.set("views", path.join(__dirname, "views")); //views의 위치를 알려주�
 
 app.use(express.static("public")); //정적 파일 명시
 
+app.use(express.urlencoded({extended: false}));
+
 app.use(authRoutes); //모든 라우터의 요청이 잘되는지 평가(get,post)
+
+app.use(csrf()); //유효한 CSRF 토큰이 없는 모든요청은 거부된다.
 
 db.connectToDatabase()
   .then(function () { //성공했을때 수신대기 시작
