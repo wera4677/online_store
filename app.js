@@ -1,8 +1,10 @@
 const path = require("path");
+
 const express = require("express");
-
 const csrf = require("csurf"); //보안 관련한 패키지
+const expressSession = require("express-session");
 
+const createSessionConfig = require("./config/session"); //세션 관련 데이터
 const db = require("./data/database");
 const addCsrfTokenMiddleware = require("./middlewares/csrf-token");
 const errorHandlerMiddleware = require("./middlewares/error-handler");
@@ -17,6 +19,9 @@ app.use(express.static("public")); //정적 파일 명시
 
 app.use(express.urlencoded({extended: false}));
 
+const sessionConfig = createSessionConfig();
+
+app.use(expressSession(sessionConfig));
 app.use(csrf()); //유효한 CSRF 토큰이 없는 모든요청은 거부된다.
 app.use(addCsrfTokenMiddleware);
 
