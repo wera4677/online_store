@@ -10,6 +10,8 @@ router.post("/signup",authcontroller.signup); //가입 데이터 생성할때 �
 
 router.get("/login", authcontroller.getLogin);//로그인 페이지를 얻기위한 라우트
 
+router.post("/login", authcontroller.login);
+
 
 module.exports = router; //모든 라우터가 노출됬었음을 알림
 
