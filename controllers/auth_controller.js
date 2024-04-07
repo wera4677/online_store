@@ -46,10 +46,16 @@ async function login(req, res){ //유효성 검사 (데이터가 일치하는지
     });
 }
 
+function logout(req, res) {
+    authUtil.destroyUserAuthSession(req);
+    res.redirect("/login");
+}
+
 module.exports = {
   //외부 파일에서도 사용가능
   getSignup: getSignup,
   getLogin: getLogin,
   signup: signup,
   login: login,
+  logout: logout,
 };

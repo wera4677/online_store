@@ -12,6 +12,7 @@ router.get("/login", authcontroller.getLogin);//로그인 페이지를 얻기위
 
 router.post("/login", authcontroller.login);
 
+router.post("/logout", authcontroller.logout);
 
 module.exports = router; //모든 라우터가 노출됬었음을 알림
 

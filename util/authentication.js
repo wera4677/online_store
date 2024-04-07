@@ -5,6 +5,12 @@ function createUserSession(req, user, action) {
     req.session.save(action);
 }
 
+function destroyUserAuthSession(req) { //로그인 토큰 삭제
+    req.session.uid = null;
+    req.session.save();
+}
+
 module.exports ={
     createUserSession: createUserSession,
+    destroyUserAuthSession: destroyUserAuthSession,
 }
