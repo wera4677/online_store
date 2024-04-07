@@ -17,6 +17,12 @@ class User {
             city: city,
         };
     }
+    
+    getYserWithSameEmail(){
+        return db.getDb().collection("users").findOne({ eamil: this.email });//DB에서 간단한 동등비교 수행
+
+
+    }
 
     async signup(){ //사용자 데이터를 데이터베이스에 저장
         const hashedPassword = await bcrypt.hash(this.passwoed, 12); //암호화된 비밀번호로 저장
@@ -27,6 +33,10 @@ class User {
             name: this.name,
             address: this.address,
         });//DB 컬랙션 에 데이터 저장 
+    }
+
+    hasMatchingPassword(hashedPassword){
+        return bcrypt.compare(this.passwoed, hashedPassword); //해싱된 암호 비교
     }
 }
 

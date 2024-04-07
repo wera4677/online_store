@@ -9,6 +9,9 @@ const db = require("./data/database");
 const addCsrfTokenMiddleware = require("./middlewares/csrf-token");
 const errorHandlerMiddleware = require("./middlewares/error-handler");
 const authRoutes = require("./routes/auth_routes");
+const productRoutes = require("./routes/products.routes");
+const baseRoutes = require("./routes/base.routes");
+
 
 const app = express();
 
@@ -25,7 +28,9 @@ app.use(expressSession(sessionConfig));
 app.use(csrf()); //유효한 CSRF 토큰이 없는 모든요청은 거부된다.
 app.use(addCsrfTokenMiddleware);
 
+app.use(baseRoutes);
 app.use(authRoutes); //모든 라우터의 요청이 잘되는지 평가(get,post)
+app.use(productRoutes);
 
 app.use(errorHandlerMiddleware); //오류처리 미들웨어
 

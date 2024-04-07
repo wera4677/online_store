@@ -6,7 +6,7 @@
     <%- include("../../shared/includes/header") %>
  <main>
     <h1>Login</h1>
-    <form action="/signup" method="POST"> <!--데이터를 제출 하기위해 post로 지정-->
+    <form action="/login" method="POST"> <!--데이터를 제출 하기위해 post로 지정-->
         <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>"> <!--토큰 제출-->
         <p>
             <label for="email">E-Mail</label>
