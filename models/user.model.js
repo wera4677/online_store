@@ -18,10 +18,16 @@ class User {
         };
     }
     
-    getYserWithSameEmail(){
+    getUserWithSameEmail(){
         return db.getDb().collection("users").findOne({ eamil: this.email });//DB에서 간단한 동등비교 수행
+    }
 
-
+    async existsAlready(){ //DB에 이메일이 없으면 참 
+        const existingUser = await this.getUserWithSameEmail();
+        if (existingUser) {
+            return true;
+        }
+        return false;
     }
 
     async signup(){ //사용자 데이터를 데이터베이스에 저장

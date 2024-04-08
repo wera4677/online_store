@@ -1,22 +1,47 @@
 const User = require("../models/user.model"); //사용자 데이터 불러오기
 const authUtil = require("../util/authentication");
+const validation = require("../util/validation");
 
 function getSignup(req, res) {
   res.render("customer/auth/signup");
 }
 
 async function signup(req, res, next) {
-  const user = new User(
-    req.body.email,
-    req.body.password,
-    req.body.fullname,
-    req.body.street,
-    req.body.postal,
-    req.body.city
-  );
+  
+   if(
+    !validation.userDetailsAreValid(
+        req.body.email,
+        req.body.password, 
+        req.body.fullname, 
+        req.body.street, 
+        req.body.postal, 
+        req.body.city
+        ) || !validation.emailIsConfirmed(req.body.email, req.body["confirm-email"])
+    ) {
+        res.redirect("/signup");
+        return;
+    }
+
+    const user = new User(
+        req.body.email,
+        req.body.password,
+        req.body.fullname,
+        req.body.street,
+        req.body.postal,
+        req.body.city
+      );
+
 
     try{ 
+        const existsAlready = await user.existsAlready();
+
+        if (existsAlready) {
+            res.redirect("/signup");
+            return;
+        }
+
         await user.signup();
+
     } catch(error) {
         next(error);
         return;
@@ -33,7 +58,7 @@ function getLogin(req, res) {
 async function login(req, res, next){ //유효성 검사 (데이터가 일치하는지 검사)
     const user = new User(req.body.email, req.body.password);
     let existingUser;
-    
+
     try{
         const existingUser = await user.getYserWithSameEmail();
     }catch(error){
