@@ -1,13 +1,22 @@
 const User = require("../models/user.model"); //사용자 데이터 불러오기
 const authUtil = require("../util/authentication");
 const validation = require("../util/validation");
+const sessionFlash = require("../util/session-flash");
 
 function getSignup(req, res) {
   res.render("customer/auth/signup");
 }
 
 async function signup(req, res, next) {
-  
+    const enteredData = {
+       email: req.body.email,
+       password: req.body.password, 
+       fullname: req.body.fullname, 
+       street: req.body.street, 
+       postal: req.body.postal, 
+       city: req.body.city
+    };    
+
    if(
     !validation.userDetailsAreValid(
         req.body.email,
@@ -18,7 +27,13 @@ async function signup(req, res, next) {
         req.body.city
         ) || !validation.emailIsConfirmed(req.body.email, req.body["confirm-email"])
     ) {
-        res.redirect("/signup");
+        sessionFlash.flashDataToSession(req, {
+            errorMessage: "Please check your input. Password must be at least 6 characters. long postal code must be 5 characters long.",
+            ...enteredData,
+        },
+        function(){
+            res.redirect("/signup");
+        })
         return;
     }
 
@@ -31,12 +46,17 @@ async function signup(req, res, next) {
         req.body.city
       );
 
-
     try{ 
         const existsAlready = await user.existsAlready();
 
         if (existsAlready) {
-            res.redirect("/signup");
+            sessionFlash.flashDataToSession(req, {
+                errorMessage:"User exists already! Try logging in instrad!",
+                ...enteredData,
+            }, 
+            function(){
+                res.redirect("/signup");
+            })
             return;
         }
 
@@ -66,15 +86,25 @@ async function login(req, res, next){ //유효성 검사 (데이터가 일치하
         return;
     }
 
+    const sessionErrorData = {
+        errorMessage:"Invalid credentials - Please double check your email and passord!",
+        email: user.email,
+        password: user.passwoed,
+    };
+
     if(!existingUser){ //주어진 데이터를 찾지못했을경우
-        res.redirect("/login");
+        sessionFlash.flashDataToSession(req, sessionErrorData, function(){
+            res.redirect("/login");
+        })
         return;
     }
 
     const passwordIsCorrect = await user.hasMatchingPassword(existingUser.password);
 
     if(!passwordIsCorrect){
-        res.redirect("/login");
+        sessionFlash.flashDataToSession(req, sessionErrorData, function(){
+            res.redirect("/login");
+        })
         return;
     }
 
