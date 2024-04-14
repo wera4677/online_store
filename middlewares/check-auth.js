@@ -1,14 +1,14 @@
 function checkAuthStatus(req, res, next) {
     const uid = req.session.uid;
-
-    if(!uid){ //요청이 들어온 사용자가 없을경우
-        return next(); //계속진행
+  
+    if (!uid) {
+      return next();
     }
-
+  
     res.locals.uid = uid;
-    res.locals.isAuth  = true; //인증됨을 알림
-    res.locals.isAdmin = req.session.isAdmin;
+    res.locals.isAuth = true; 
+    res.locals.isAdmin = req.session.isAdmin; 
     next();
-}
-
-module.exports = checkAuthStatus;
+  }
+  
+  module.exports = checkAuthStatus;

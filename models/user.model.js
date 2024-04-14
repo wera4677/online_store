@@ -1,49 +1,49 @@
-//키 와 역할 
-//bcryptjs패키지 => 암호화 또는 해싱 암호를 사용하는것에 도움
-const bcrypt = require('bcryptjs'); //암호화에 도움
+const bcrypt = require('bcryptjs');
 
-const db = require('../data/database'); //데이터베이스에 연결
-
-
+const db = require('../data/database');
 
 class User {
-    constructor(email, passwoed, fullname, street, postal, city){ //생성자 메서드 
-        this.email = email;
-        this.passwoed = passwoed;
-        this.name = fullname;
-        this.address = {
-            street: street,
-            postalCode: postal,
-            city: city,
-        };
-    }
-    
-    getYserWithSameEmail(){
-        return db.getDb().collection("users").findOne({ email: this.email });//DB에서 간단한 동등비교 수행
-    }
+  constructor(email, password, fullname, street, postal, city) {
+    this.email = email;
+    this.password = password;
+    this.name = fullname;
+    this.address = {
+      street: street,
+      postalCode: postal,
+      city: city,
+    };
+  }
 
-    async existsAlready(){ //DB에 이메일이 없으면 참 
-        const existingUser = await this.getYserWithSameEmail();
-        if (existingUser) {
-            return true;
-        }
-        return false;
-    }
+  getUserWithSameEmail() {
+    return db.getDb().collection('users').findOne({ email: this.email });
+  }
 
-    async signup(){ //사용자 데이터를 데이터베이스에 저장
-        const hashedPassword = await bcrypt.hash(this.passwoed, 12); //암호화된 비밀번호로 저장
-
-        await db.getDb().collection('users').insertOne({
-            email: this.email,
-            passwoed: hashedPassword, //보안문제 해결을 위해 해싱(암호) 사용
-            name: this.name,
-            address: this.address,
-        });//DB 컬랙션 에 데이터 저장 
+  async existsAlready() {
+    const existingUser = await this.getUserWithSameEmail();
+    if (existingUser) {
+      return true;
     }
+    return false;
+  }
 
-    hasMatchingPassword(hashedPassword){
-        return bcrypt.compare(this.passwoed, hashedPassword); //해싱된 암호 비교
+  async signup() {
+    const hashedPassword = await bcrypt.hash(this.password, 12);
+
+    await db.getDb().collection('users').insertOne({
+      email: this.email,
+      password: hashedPassword,
+      name: this.name,
+      address: this.address,
+    });
+  }
+
+  hasMatchingPassword(hashedPassword) {
+    if (typeof hashedPassword !== 'string') {
+        throw new Error('해시된 비밀번호가 유효하지 않습니다.');
     }
+    return bcrypt.compare(this.password, hashedPassword);
+}
+
 }
 
 module.exports = User;
