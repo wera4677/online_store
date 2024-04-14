@@ -18,12 +18,12 @@ class User {
         };
     }
     
-    getUserWithSameEmail(){
-        return db.getDb().collection("users").findOne({ eamil: this.email });//DB에서 간단한 동등비교 수행
+    getYserWithSameEmail(){
+        return db.getDb().collection("users").findOne({ email: this.email });//DB에서 간단한 동등비교 수행
     }
 
     async existsAlready(){ //DB에 이메일이 없으면 참 
-        const existingUser = await this.getUserWithSameEmail();
+        const existingUser = await this.getYserWithSameEmail();
         if (existingUser) {
             return true;
         }
