@@ -7,6 +7,7 @@ function checkAuthStatus(req, res, next) {
 
     res.locals.uid = uid;
     res.locals.isAuth  = true; //인증됨을 알림
+    res.locals.isAdmin = req.session.isAdmin;
     next();
 }
 
