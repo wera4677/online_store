@@ -37,13 +37,10 @@ class User {
     });
   }
 
-  hasMatchingPassword(hashedPassword) {
-    if (typeof hashedPassword !== 'string') {
-        throw new Error('해시된 비밀번호가 유효하지 않습니다.');
-    }
-    return bcrypt.compare(this.password, hashedPassword);
-}
-
+    hasMatchingPassword(hashedPassword) {
+        return bcrypt.compare(this.password, hashedPassword);
+        }
+    
 }
 
 module.exports = User;
