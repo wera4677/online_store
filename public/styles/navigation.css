@@ -1,4 +1,7 @@
 #main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   max-width: 60rem;
   height: 5rem;
@@ -41,4 +44,24 @@
   width: 2.25rem;
   height: 0.2rem;
   background-color: var(--color-gray-100);
+}
+
+@media (min-width: 48rem) {
+  #mobile-menu-btn{
+    display: none;
+  }
+
+  #mobile-menu {
+    display: none;
+  }
+
+  .nav-items a {
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--border-radius-small);
+  }
+
+  .nav-items a:hover,
+  .nav-items a:active {
+    background-color: var(--color-primary-500-bg);
+  }
 }

@@ -2,6 +2,7 @@ const User = require('../models/user.model');
 const authUtil = require('../util/authentication');
 const validation = require('../util/validation');
 const sessionFlash = require('../util/session-flash');
+const bcrypt = require("bcryptjs");
 
 function getSignup(req, res) {
   let sessionData = sessionFlash.getSessionData(req);
@@ -118,8 +119,8 @@ async function login(req, res, next) {
   const sessionErrorData = {
     errorMessage:
       'Invalid credentials - please double-check your email and password!',
-    email: user.email,
-    password: user.password,
+    // email: user.email,
+    // password: user.password,
   };
 
   if (!existingUser) {
@@ -130,7 +131,7 @@ async function login(req, res, next) {
   }
 
   const passwordIsCorrect = await user.hasMatchingPassword(
-    existingUser.password
+    await bcrypt.hash(user.password, 12)
   );
 
   if (!passwordIsCorrect) {
