@@ -39,6 +39,15 @@ main {
   margin: 0 var(--space-2);
 }
 
+.nav-items button {
+  cursor: pointer;
+  font: inherit;
+  border: 1px solid var(--color-primary-500);
+  border-radius: var(--border-radius-small);
+  background-color: transparent;
+  padding: var(--space-2) var(--space-4);
+}
+
 #mobile-menu-btn {
   display: flex;
   flex-direction: column;
@@ -75,6 +84,12 @@ main {
   margin: var(--space-4) auto;
 }
 
+#mobile-menu .nav-items a,
+#mobile-menu .nav-items button {
+  font-size: 1.75rem;
+  color: var(--color-primary-100);
+}
+
 @media (min-width: 48rem) {
   main {
     margin-top: 6rem;
@@ -88,12 +103,21 @@ main {
     display: block;
   }
 
+  .nav-items button {
+    color: var(--color-primary-500);
+    border-color: var(--color-primary-500);
+  }
+
   #mobile-menu-btn{
     display: none;
   }
 
   #mobile-menu {
     display: none;
+  }
+
+  .nav-items {
+    flex-direction: row;
   }
 
   .nav-items a {
