@@ -12,6 +12,7 @@ const checkAuthStatusMiddleware = require('./middlewares/check-auth');
 const authRoutes = require('./routes/auth.routes');
 const productsRoutes = require('./routes/products.routes');
 const baseRoutes = require('./routes/base.routes');
+const adminRoutes =require('./routes/admin.routes');
 
 const app = express();
 
@@ -32,6 +33,7 @@ app.use(checkAuthStatusMiddleware);
 app.use(baseRoutes);
 app.use(authRoutes);
 app.use(productsRoutes);
+app.use('/admin', adminRoutes); //매개변수 등록하여 주소가 admin으로 시작할때만 적용
 
 app.use(errorHandlerMiddleware);
 
