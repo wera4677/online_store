@@ -1,6 +1,10 @@
-function getProducts() {}
+function getProducts(req,res) {
+    res.render('admin/products/all-products');
+}
 
-function getNewProducts() {}
+function getNewProducts(req, res) {
+    res.render('admin/products/new-product');
+}
 
 function createNewProduct() {}
 

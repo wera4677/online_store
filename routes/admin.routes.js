@@ -6,8 +6,8 @@ const adminController = require('../controllers/admin.controller');
 
 const router = express.Router();
 
-router.get('/products', ); //admin/products
+router.get('/products', adminController.getProducts ); //admin/products
 
-router.get('/products/new', );
+router.get('/products/new', adminController.getNewProducts );
 
 module.exports = router;
